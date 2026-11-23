@@ -1,0 +1,302 @@
+@import "@fontsource/nunito/latin-400.css";
+@import "@fontsource/nunito/cyrillic-400.css";
+@import "@fontsource/nunito/latin-700.css";
+@import "@fontsource/nunito/cyrillic-700.css";
+@import "@fontsource/nunito/latin-800.css";
+@import "@fontsource/nunito/cyrillic-800.css";
+@import "@fontsource/playfair-display/latin-600.css";
+@import "@fontsource/playfair-display/latin-700.css";
+@import "@fontsource/playfair-display/latin-900.css";
+@import "@fontsource/special-elite/latin-400.css";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Playfair Display", "Iowan Old Style", Georgia, serif;
+  --font-type: "Special Elite", "Courier New", ui-monospace, monospace;
+
+  --color-cave-950: #100b07;
+  --color-cave-900: #170f0a;
+  --color-cave-850: #1f150e;
+  --color-cave-800: #281c13;
+  --color-cave-700: #35251a;
+  --color-cave-600: #4a3122;
+  --color-cave-500: #5e402c;
+
+  --color-bronze-600: #a9763c;
+  --color-bronze-500: #c08b4b;
+  --color-bronze-400: #d9a763;
+  --color-bronze-300: #ecc894;
+  --color-bronze-200: #f6dfc0;
+
+  --color-lantern-500: #ffa62b;
+  --color-lantern-400: #ffbb57;
+  --color-lantern-300: #ffd58a;
+
+  --color-parch-50: #fbf3e5;
+  --color-parch-100: #f3e6d0;
+  --color-parch-200: #e7d4b7;
+  --color-parch-300: #d5bd99;
+
+  --color-ink-900: #241a12;
+  --color-ink-700: #4a392a;
+  --color-ink-500: #6d5741;
+
+  --color-solved: #4fae84;
+  --color-wrong: #d0604c;
+  --color-clue: #79a8cf;
+
+  --animate-flicker: flicker 5s ease-in-out infinite;
+  --animate-eq: eq 1s ease-in-out infinite;
+  --animate-pop: pop 0.35s cubic-bezier(0.22, 1.4, 0.5, 1) both;
+  --animate-shake: shake 0.4s ease-in-out both;
+  --animate-drift: drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  35% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.7;
+  }
+  72% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  45% {
+    transform: translateX(5px);
+  }
+  70% {
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, -2%, 0) scale(1.08);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cave-950);
+  color: var(--color-parch-100);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-lantern-400);
+  color: var(--color-ink-900);
+}
+
+/* ---------- atmosphere ---------- */
+.cave-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 45% at 78% 12%, rgba(255, 176, 66, 0.16), transparent 70%),
+    radial-gradient(45% 40% at 12% 82%, rgba(255, 160, 60, 0.08), transparent 72%),
+    radial-gradient(120% 90% at 50% 0%, #2a1d13 0%, #170f0a 45%, #0e0906 100%);
+}
+
+.cave-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      -70deg,
+      rgba(0, 0, 0, 0.16) 0px,
+      rgba(0, 0, 0, 0.16) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: inset 0 0 220px 60px rgba(0, 0, 0, 0.65);
+}
+
+/* ---------- surfaces ---------- */
+.stone {
+  background:
+    linear-gradient(180deg, rgba(255, 214, 160, 0.055), rgba(0, 0, 0, 0.16)),
+    linear-gradient(180deg, #291c13, #1d140d);
+  border: 1px solid rgba(217, 167, 99, 0.16);
+  box-shadow:
+    0 1px 0 rgba(255, 224, 178, 0.06) inset,
+    0 22px 44px -28px rgba(0, 0, 0, 0.9);
+}
+
+.paper {
+  color: var(--color-ink-900);
+  background-color: var(--color-parch-100);
+  background-image:
+    radial-gradient(120% 80% at 12% 8%, rgba(255, 255, 255, 0.75), transparent 55%),
+    radial-gradient(90% 70% at 92% 96%, rgba(180, 138, 88, 0.22), transparent 60%),
+    repeating-linear-gradient(
+      92deg,
+      rgba(160, 118, 70, 0.05) 0px,
+      rgba(160, 118, 70, 0.05) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+  box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.85);
+}
+
+.tape {
+  font-family: var(--font-type);
+  letter-spacing: 0.06em;
+}
+
+.ink-line {
+  border-bottom: 1px dashed rgba(74, 57, 42, 0.45);
+}
+
+/* ---------- interaction ---------- */
+.answer-chip {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+.answer-chip:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.answer-chip:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.lift {
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------- scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.8, 0.3, 1),
+    transform 0.7s cubic-bezier(0.22, 0.8, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- scrollbar ---------- */
+.step-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 167, 99, 0.4) transparent;
+}
+.step-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.step-scroll::-webkit-scrollbar-thumb {
+  background: rgba(217, 167, 99, 0.35);
+  border-radius: 99px;
+}
+
+/* ---------- misc ---------- */
+.gap-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  padding: 0 0.5rem;
+  border-bottom: 2px solid rgba(236, 200, 148, 0.55);
+  font-family: var(--font-type);
+  letter-spacing: 0.02em;
+  color: var(--color-lantern-300);
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-lantern-400);
+  outline-offset: 2px;
+}
